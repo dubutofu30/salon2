@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Admin - Resana Salon</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #1e293b;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 38px;
+            border-radius: 28px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            color: #4f46e5;
+            font-size: 34px;
+        }
+
+        p {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: black;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #4f46e5;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Resana Salon</h1>
+    <p>Login Admin Dashboard</p>
+
+    <form action="/login-admin" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Login Admin</button>
+    </form>
+
+    <a href="/pelanggan">Kembali ke Page Pelanggan</a>
+</div>
+
+</body>
+</html>

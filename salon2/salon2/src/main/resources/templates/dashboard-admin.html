@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin - Resana Salon</title>
+
+    <style>
+        *{box-sizing:border-box;font-family:Arial,sans-serif}
+        body{margin:0;background:#f1f5f9;color:#1e293b}
+        nav{background:white;padding:18px 70px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+        .brand h1{margin:0;color:#4f46e5;font-size:28px}
+        .brand p{margin:4px 0 0;color:#64748b;font-size:13px}
+        .nav-actions a{text-decoration:none;padding:11px 18px;border-radius:12px;font-weight:bold;margin-left:10px}
+        .btn-indigo{background:#4f46e5;color:white}
+        .btn-red{background:#ef4444;color:white}
+        .container{max-width:1250px;margin:35px auto;padding:0 25px}
+        .hero{background:#0f172a;color:white;border-radius:28px;padding:35px;margin-bottom:28px;box-shadow:0 15px 35px rgba(15,23,42,.22)}
+        .hero h2{margin:0 0 10px;font-size:40px}
+        .hero p{color:#cbd5e1;margin:0}
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
+        .stat-card{background:white;border-radius:22px;padding:24px;box-shadow:0 12px 28px rgba(0,0,0,.07)}
+        .stat-card p{margin:0;color:#64748b}
+        .stat-card h3{margin:8px 0 0;font-size:34px;color:#4f46e5}
+        .card{background:white;border-radius:26px;padding:28px;box-shadow:0 12px 28px rgba(0,0,0,.07);margin-bottom:28px}
+        .card h3{margin-top:0;font-size:24px}
+        .table-wrap{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;min-width:900px}
+        thead{background:#4f46e5;color:white}
+        th,td{padding:14px;text-align:left;border-bottom:1px solid #e2e8f0}
+        tbody tr:hover{background:#f8fafc}
+        .badge{padding:6px 11px;border-radius:999px;background:#dcfce7;color:#166534;font-weight:bold;font-size:12px}
+        .action{text-decoration:none;padding:8px 11px;border-radius:10px;color:white;font-size:13px;font-weight:bold;display:inline-block;margin:2px}
+        .yellow{background:#eab308}
+        .red{background:#ef4444}
+        .print-btn{float:right;background:#0f172a;color:white;padding:12px 18px;border-radius:12px;border:none;font-weight:bold;cursor:pointer}
+
+        @media(max-width:900px){
+            nav{padding:18px 25px;flex-direction:column;gap:15px}
+            .stats{grid-template-columns:1fr}
+        }
+
+        @media print{
+            nav,.stats,.hero,.nav-actions,.print-btn,.action{display:none!important}
+            body{background:white}
+            .card{box-shadow:none}
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="brand">
+        <h1>Resana Salon</h1>
+        <p>Admin Dashboard</p>
+    </div>
+
+    <div class="nav-actions">
+        <a href="/pelanggan" class="btn-indigo">Page Pelanggan</a>
+        <a href="/login-admin" class="btn-red">Logout</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <h2>Dashboard Admin</h2>
+        <p>Kelola admin, pelanggan, booking, payment, dan laporan Resana Salon.</p>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <p>Total Admin</p>
+            <h3 th:text="${#lists.size(adminList)}">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Pelanggan</p>
+            <h3 th:text="${#lists.size(pelangganList)}">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Booking</p>
+            <h3 th:text="${#lists.size(bookingList)}">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Payment</p>
+            <h3 th:text="${#lists.size(paymentList)}">0</h3>
+        </div>
+    </section>
+
+    <!-- DATA ADMIN -->
+    <section class="card">
+        <h3>Data Admin</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID Admin</th>
+                    <th>Nama Admin</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${#lists.isEmpty(adminList)}">
+                    <td colspan="4" style="text-align:center;color:#64748b;padding:30px;">
+                        Belum ada data admin.
+                    </td>
+                </tr>
+
+                <tr th:each="a : ${adminList}">
+                    <td th:text="'AD-' + ${a.idAdmin}"></td>
+                    <td th:text="${a.namaAdmin}"></td>
+                    <td th:text="${a.username}"></td>
+                    <td th:text="${a.password}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- DATA PELANGGAN -->
+    <section class="card">
+        <h3>Data Pelanggan</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID Pelanggan</th>
+                    <th>Nama</th>
+                    <th>No HP</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${#lists.isEmpty(pelangganList)}">
+                    <td colspan="4" style="text-align:center;color:#64748b;padding:30px;">
+                        Belum ada data pelanggan.
+                    </td>
+                </tr>
+
+                <tr th:each="p : ${pelangganList}">
+                    <td th:text="'PL-' + ${p.idPelanggan}"></td>
+                    <td th:text="${p.namaPelanggan}"></td>
+                    <td th:text="${p.noHp}"></td>
+                    <td>
+                        <a th:href="@{/admin/pelanggan/hapus/{id}(id=${p.idPelanggan})}" class="action red">
+                            Hapus
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- DATA BOOKING -->
+    <section class="card">
+        <h3>Data Booking</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID Booking</th>
+                    <th>Pelanggan</th>
+                    <th>Model Haircut</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Jumlah</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${#lists.isEmpty(bookingList)}">
+                    <td colspan="9" style="text-align:center;color:#64748b;padding:30px;">
+                        Belum ada data booking.
+                    </td>
+                </tr>
+
+                <tr th:each="b : ${bookingList}">
+                    <td th:text="'BK-' + ${b.idBooking}"></td>
+                    <td th:text="${b.pelanggan.namaPelanggan}"></td>
+                    <td th:text="${b.jenisHaircut}"></td>
+                    <td th:text="${b.tanggalBooking}"></td>
+                    <td th:text="${b.jamBooking}"></td>
+                    <td th:text="${b.jumlahBooking}"></td>
+                    <td th:text="'Rp ' + ${b.jumlahBooking * b.layanan.harga}"></td>
+                    <td>
+                        <span class="badge" th:text="${b.statusBooking}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/booking/batal/{id}(id=${b.idBooking})}" class="action yellow">
+                            Batal
+                        </a>
+
+                        <a th:href="@{/admin/booking/hapus/{id}(id=${b.idBooking})}" class="action red">
+                            Hapus
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- DATA PAYMENT -->
+    <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div>
+                <h3 style="margin-bottom:5px;">Data Payment</h3>
+                <p style="color:#64748b;">Seluruh pembayaran pelanggan Resana Salon.</p>
+            </div>
+
+            <div style="background:#dcfce7;color:#166534;padding:10px 18px;border-radius:14px;font-weight:bold;">
+                Total Payment:
+                <span th:text="${#lists.size(paymentList)}">0</span>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID Payment</th>
+                    <th>ID Booking</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Model Haircut</th>
+                    <th>Metode Bayar</th>
+                    <th>Tanggal Payment</th>
+                    <th>Total Bayar</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${#lists.isEmpty(paymentList)}">
+                    <td colspan="8" style="text-align:center;padding:30px;color:#64748b;">
+                        Belum ada data payment.
+                    </td>
+                </tr>
+
+                <tr th:each="pay : ${paymentList}">
+                    <td th:text="'PAY-' + ${pay.idPayment}"></td>
+                    <td th:text="'BK-' + ${pay.booking.idBooking}"></td>
+                    <td th:text="${pay.booking.pelanggan.namaPelanggan}"></td>
+                    <td th:text="${pay.booking.jenisHaircut}"></td>
+                    <td th:text="${pay.metodePayment}"></td>
+                    <td th:text="${pay.tanggalPayment}"></td>
+                    <td style="font-weight:bold;color:#059669;" th:text="'Rp ' + ${pay.jumlahBayar}"></td>
+                    <td>
+                        <span class="badge" th:text="${pay.statusPayment}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- LAPORAN -->
+    <section class="card">
+        <button onclick="window.print()" class="print-btn">
+            Cetak Laporan
+        </button>
+
+        <h3>Laporan Booking & Payment</h3>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Pelanggan</th>
+                    <th>Haircut</th>
+                    <th>Status Booking</th>
+                    <th>Payment</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${#lists.isEmpty(bookingList)}">
+                    <td colspan="5" style="text-align:center;color:#64748b;padding:30px;">
+                        Belum ada laporan.
+                    </td>
+                </tr>
+
+                <tr th:each="b : ${bookingList}">
+                    <td th:text="'BK-' + ${b.idBooking}"></td>
+                    <td th:text="${b.pelanggan.namaPelanggan}"></td>
+                    <td th:text="${b.jenisHaircut}"></td>
+                    <td th:text="${b.statusBooking}"></td>
+                    <td th:text="${b.payment != null ? b.payment.statusPayment : 'Belum Bayar'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+</body>
+</html>

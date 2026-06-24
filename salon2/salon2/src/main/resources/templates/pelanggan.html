@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resana Salon - Booking</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        nav {
+            background: white;
+            padding: 18px 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .brand h1 {
+            margin: 0;
+            color: #4f46e5;
+            font-size: 28px;
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .admin-btn {
+            background: #0f172a;
+            color: white;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            color: white;
+            border-radius: 28px;
+            padding: 55px;
+            margin-bottom: 35px;
+            box-shadow: 0 18px 40px rgba(79,70,229,0.25);
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin: 0 0 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #e0e7ff;
+        }
+
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .card h2, .card h3 {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .form-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .form-6 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+        }
+
+        button {
+            border: none;
+            border-radius: 14px;
+            padding: 15px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-indigo {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-green {
+            background: #059669;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-indigo:hover {
+            background: #4338ca;
+        }
+
+        .btn-green:hover {
+            background: #047857;
+        }
+
+        .booking-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 28px;
+        }
+
+        .info {
+            margin-top: 18px;
+            background: #eef2ff;
+            color: #3730a3;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 18px 25px;
+            }
+
+            .hero {
+                padding: 35px;
+            }
+
+            .hero h2 {
+                font-size: 34px;
+            }
+
+            .form-3, .form-6 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="brand">
+        <h1>Resana Salon</h1>
+        <p>Customer Booking Page</p>
+    </div>
+
+    <a href="/login-admin" class="admin-btn">Login Admin</a>
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <h2>Booking Haircut</h2>
+        <p>Pilih model haircut perempuan favoritmu dan lakukan booking dengan mudah di Resana Salon.</p>
+    </section>
+
+    <section class="card">
+        <h2>Daftar Pelanggan</h2>
+        <p class="subtitle">Isi nama dan nomor HP terlebih dahulu sebelum melakukan booking.</p>
+
+        <form action="/pelanggan" method="post" class="form-3">
+            <input name="namaPelanggan" placeholder="Nama Pelanggan" required>
+
+            <input name="noHp" placeholder="Nomor HP" required>
+
+            <button type="submit" class="btn-indigo">
+                Daftar Pelanggan
+            </button>
+        </form>
+    </section>
+
+    <section class="card">
+        <div class="booking-box">
+            <h3>Form Booking & Payment</h3>
+            <p class="subtitle">Harga haircut Rp150.000/orang. Total pembayaran dihitung otomatis.</p>
+
+            <form action="/booking" method="post" class="form-6">
+
+                <select name="idPelanggan" required>
+                    <option value="">Pilih Nama Pelanggan</option>
+                    <option th:each="p : ${pelangganList}"
+                            th:value="${p.idPelanggan}"
+                            th:text="${p.namaPelanggan}">
+                    </option>
+                </select>
+
+                <select name="jenisHaircut" required>
+                    <option value="">Pilih Haircut</option>
+                    <option value="Butterfly Cut">Butterfly Cut</option>
+                    <option value="Layer Cut">Layer Cut</option>
+                    <option value="Oval Layer">Oval Layer</option>
+                    <option value="Long Layer">Long Layer</option>
+                    <option value="Korean Layer">Korean Layer</option>
+                    <option value="Hime Cut">Hime Cut</option>
+                    <option value="Wolf Cut">Wolf Cut</option>
+                    <option value="Bob Cut">Bob Cut</option>
+                    <option value="Lob Cut">Lob Cut</option>
+                    <option value="Pixie Cut">Pixie Cut</option>
+                    <option value="Shaggy Cut">Shaggy Cut</option>
+                    <option value="Curtain Bangs">Curtain Bangs</option>
+                    <option value="Wispy Bangs">Wispy Bangs</option>
+                    <option value="See Through Bangs">See Through Bangs</option>
+                </select>
+
+                <input type="date" name="tanggalBooking" required>
+
+                <input type="time" name="jamBooking" required>
+
+                <input type="number" name="jumlahBooking" min="1" placeholder="Jumlah Orang" required>
+
+                <select name="metodePayment" required>
+                    <option value="">Metode Bayar</option>
+                    <option value="QRIS">QRIS</option>
+                    <option value="E-Wallet">E-Wallet</option>
+                </select>
+
+                <button type="submit" class="btn-green">
+                    Booking & Bayar
+                </button>
+            </form>
+
+            <div class="info">
+                Contoh: 2 orang × Rp150.000 = Rp300.000. Total akan otomatis masuk ke data payment.
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+
+    <h2>Riwayat Booking</h2>
+
+    <p class="subtitle">
+        Data booking dan pembayaran pelanggan Resana Salon.
+    </p>
+
+    <div style="overflow-x:auto;">
+
+        <table style="
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:18px;
+            overflow:hidden;
+        ">
+
+            <thead style="
+                background:#4f46e5;
+                color:white;
+            ">
+
+            <tr>
+                <th style="padding:14px; text-align:left;">Nama</th>
+                <th style="padding:14px; text-align:left;">Haircut</th>
+                <th style="padding:14px; text-align:left;">Tanggal</th>
+                <th style="padding:14px; text-align:left;">Jam</th>
+                <th style="padding:14px; text-align:left;">Jumlah</th>
+                <th style="padding:14px; text-align:left;">Total</th>
+                <th style="padding:14px; text-align:left;">Payment</th>
+                <th style="padding:14px; text-align:left;">Status</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="b : ${bookingList}"
+                style="border-bottom:1px solid #e2e8f0;">
+
+                <td style="padding:14px;"
+                    th:text="${b.pelanggan.namaPelanggan}">
+                </td>
+
+                <td style="padding:14px;"
+                    th:text="${b.jenisHaircut}">
+                </td>
+
+                <td style="padding:14px;"
+                    th:text="${b.tanggalBooking}">
+                </td>
+
+                <td style="padding:14px;"
+                    th:text="${b.jamBooking}">
+                </td>
+
+                <td style="padding:14px;"
+                    th:text="${b.jumlahBooking}">
+                </td>
+
+                <td style="padding:14px; font-weight:bold; color:#059669;"
+                    th:text="'Rp ' + ${b.jumlahBooking * b.layanan.harga}">
+                </td>
+
+                <td style="padding:14px;"
+                    th:text="${b.payment.metodePayment}">
+                </td>
+
+                <td style="padding:14px;">
+
+                    <span style="
+                        background:#dcfce7;
+                        color:#166534;
+                        padding:7px 12px;
+                        border-radius:999px;
+                        font-size:12px;
+                        font-weight:bold;
+                    "
+                    th:text="${b.statusBooking}">
+                    </span>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>
